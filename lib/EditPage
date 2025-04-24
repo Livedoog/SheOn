@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
+import 'package:sheon/color.dart';
+
+class EditPage extends StatefulWidget {
+  const EditPage({super.key});
+
+  @override
+  _EditPageState createState() => _EditPageState();
+}
+
+class _EditPageState extends State<EditPage> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+  }
+
+  Future<void> _loadProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _nameController.text = prefs.getString('name') ?? 'User';
+      _emailController.text = prefs.getString('email') ?? 'example@example.com';
+      final avatarPath = prefs.getString('avatarImage');
+      if (avatarPath != null && File(avatarPath).existsSync()) {
+        _selectedImage = File(avatarPath);
+      }
+    });
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _saveProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', _nameController.text);
+    await prefs.setString('email', _emailController.text);
+    if (_selectedImage != null) {
+      await prefs.setString('avatarImage', _selectedImage!.path);
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Profile', style: TextStyle(color: Colors.black)),
+        centerTitle: true,
+        backgroundColor: AppColors.primary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save, color: AppColors.secondary),
+            onPressed: () {
+              _saveProfileData();
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: _pickImage,
+              child: CircleAvatar(
+                radius: 60,
+                backgroundColor: Colors.grey[200],
+                backgroundImage: _selectedImage != null
+                    ? FileImage(_selectedImage!)
+                    : null,
+                child: _selectedImage == null
+                    ? const Icon(Icons.camera_alt, size: 40, color: Colors.grey)
+                    : null,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Tap to change profile picture',
+              style: TextStyle(color: Colors.grey),
+            ),
+            const SizedBox(height: 40),
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                labelText: 'Name',
+                labelStyle: TextStyle(color: AppColors.secondary),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.secondary),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.secondary),
+                ),
+              ),
+              style: TextStyle(color: Colors.black),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                labelStyle: TextStyle(color: AppColors.secondary),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.secondary),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.secondary),
+                ),
+              ),
+              style: TextStyle(color: Colors.black),
+              keyboardType: TextInputType.emailAddress,
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: AppColors.primary,
+    );
+  }
+}

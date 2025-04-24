@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "678896897253",
+    "project_id": "sheon-8109e",
+    "storage_bucket": "sheon-8109e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678896897253:android:96bb95bba503f7cedf980c",
+        "android_client_info": {
+          "package_name": "com.example.sheon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678896897253-bb40sjvk7646e99k1vilr733e0655kh1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sheon",
+            "certificate_hash": "77ca6e5f63ea22dee803529538989faf0fff362b"
+          }
+        },
+        {
+          "client_id": "678896897253-9hjimt6db48jr5prj9lti7tstjaqukpo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtFeiFs3g6JEH8r4Zxb4MZEJtHn0pEeR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678896897253-9hjimt6db48jr5prj9lti7tstjaqukpo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
