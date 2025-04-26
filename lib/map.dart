@@ -221,7 +221,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _fetchRoute(LatLng from, LatLng to) async {
-    const String apiKey = "AIzaSyBLRyC2CoTaD7wFZZIMpSo1E6QDztHwmNQ";
+    const String apiKey = "";
     String url = "https://maps.googleapis.com/maps/api/directions/json?"
         "origin=${from.latitude},${from.longitude}"
         "&destination=${to.latitude},${to.longitude}"
